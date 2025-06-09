@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Freezer Temperature Logger</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 30px; }
+        h1 { text-align: center; }
+        .freezer-box { margin: 20px 0; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        label, input, button { margin: 5px 0; display: block; width: 100%; }
+        table { width: 100%; margin-top: 10px; border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Freezer Temperature Logger</h1>
+    <div id="freezer-container"></div>
+
+    <script>
+        const freezers = ['Right 1', 'Right 2', 'Right 3', 'Left 1', 'Left 2', 'Left 3'];
+        const container = document.getElementById('freezer-container');
+        const data = {};
+
+        freezers.forEach(name => {
+            data[name] = [];
+
+            const box = document.createElement('div');
+            box.className = 'freezer-box';
+
+            const title = document.createElement('h2');
+            title.textContent = name;
+            box.appendChild(title);
+
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.placeholder = 'Enter temperature in °C';
+            box.appendChild(input);
+
+            const button = document.createElement('button');
+            button.textContent = 'Save Temperature';
+            box.appendChild(button);
+
+            const table = document.createElement('table');
+            const header = document.createElement('tr');
+            header.innerHTML = '<th>Temperature (°C)</th><th>Timestamp</th>';
+            table.appendChild(header);
+            box.appendChild(table);
+
+            button.onclick = () => {
+                const temp = input.value;
+                if (temp === '') return;
+                const timestamp = new Date().toLocaleString();
+                data[name].push({ temp, timestamp });
+
+                const row = document.createElement('tr');
+                row.innerHTML = `<td>${temp}</td><td>${timestamp}</td>`;
+                table.appendChild(row);
+
+                input.value = '';
+            };
+
+            container.appendChild(box);
+        });
+    </script>
+</body>
+</html>
